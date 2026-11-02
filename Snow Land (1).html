@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Snow Land</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&family=Lobster&display=swap">
+<style>
+:root{
+  --bg1:#eaf6ff; --bg2:#bfe3fb; --ink:#0b3a63; --accent:#1e88e5; --accent2:#0d5fa8; --card:rgba(255,255,255,.78); --line:#cfe8fa;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg1:#0e2a47; --bg2:#14436f; --ink:#eaf6ff; --accent:#5bb6ff; --accent2:#2f8fe0; --card:rgba(15,45,78,.8); --line:#2a5f93}
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{
+  font-family:"Vazirmatn",Tahoma,"Segoe UI",system-ui,sans-serif; color:var(--ink);
+  background:radial-gradient(rgba(255,255,255,.85) 1.5px,transparent 2.2px) 0 0/90px 90px,radial-gradient(rgba(255,255,255,.6) 1px,transparent 1.6px) 40px 50px/60px 60px,radial-gradient(circle at 20% 8%,rgba(255,255,255,.55),transparent 45%),linear-gradient(180deg,var(--bg2),var(--bg1));
+  display:flex; justify-content:center; padding:24px 16px 40px; overflow-x:hidden;
+}
+#snow{position:fixed;inset:0;pointer-events:none;z-index:0}
+.ground{position:fixed;left:0;right:0;bottom:0;height:20vh;pointer-events:none;z-index:0;background:radial-gradient(ellipse 65% 100% at 18% 100%,#fff 62%,transparent 63%),radial-gradient(ellipse 70% 85% at 78% 100%,#eef8ff 62%,transparent 63%),radial-gradient(ellipse 50% 60% at 48% 100%,#fff 62%,transparent 63%)}
+main{position:relative;z-index:1;width:100%;max-width:440px;text-align:center}
+h1{
+  font-family:"Lobster","Trebuchet MS",Georgia,cursive; font-weight:400; font-size:4rem; margin:28px 0 4px; letter-spacing:.04em;
+  color:#fff; text-shadow:0 2px 0 var(--accent2),0 6px 18px rgba(13,95,168,.45);
+}
+.sub{margin:0 0 24px;font-size:1rem;opacity:.85}
+.card{background:var(--card);border:1px solid rgba(255,255,255,.8);border-radius:24px;padding:22px;margin-bottom:18px;box-shadow:0 10px 30px rgba(13,95,168,.18),inset 0 1px 0 rgba(255,255,255,.9);font-weight:600}
+.card h2{font-weight:800;font-size:1.2rem}
+.card h2{margin:0 0 8px;font-size:1.1rem}
+.card p{margin:0}
+.ip{
+  direction:ltr;display:block;margin:14px auto 0;padding:9px 12px;border:2px solid transparent;border-radius:14px;
+  font-family:ui-monospace,Menlo,monospace;font-size:1.1rem;letter-spacing:.06em;font-weight:700;text-align:center;user-select:all;background:linear-gradient(#f4fbff,#dff1ff) padding-box,linear-gradient(135deg,#5bb6ff,#ffffff,#1e88e5) border-box;color:#0b3a63;box-shadow:0 0 0 6px rgba(255,255,255,.45),0 10px 24px rgba(30,136,229,.35)
+}
+.btn{
+  display:block;width:100%;border:0;border-radius:14px;padding:9px;font:inherit;font-size:.92rem;font-weight:700;cursor:pointer;
+  background:linear-gradient(180deg,var(--accent),var(--accent2));color:#fff;text-decoration:none;margin-top:12px;font-family:inherit;box-shadow:0 8px 20px rgba(30,136,229,.4);border-radius:999px
+}
+.btn.alt{background:linear-gradient(180deg,#fff,#e6f4ff);color:var(--accent2);border:2px solid var(--accent);box-shadow:0 6px 16px rgba(30,136,229,.25)}
+.btn:active{transform:scale(.98)}
+#join{background:linear-gradient(135deg,#42a5f5,#1565c0);font-size:.98rem;padding:10px;box-shadow:0 10px 26px rgba(21,101,192,.5),inset 0 2px 0 rgba(255,255,255,.4)}
+.join-card{border:2px solid #fff;padding-top:34px;background:radial-gradient(circle at 50% 0,rgba(255,255,255,.98),rgba(214,238,255,.85) 70%);outline:2px dashed rgba(30,136,229,.4);outline-offset:-10px;box-shadow:0 0 0 5px rgba(255,255,255,.4),0 0 28px rgba(91,182,255,.55),0 16px 40px rgba(13,95,168,.28),inset 0 1px 0 #fff;position:relative}
+.join-card .ip,.join-card .btn{width:72%;margin-left:auto;margin-right:auto}
+.icicles{position:absolute;top:0;left:14px;right:14px;height:16px;background:linear-gradient(135deg,#fff 25%,transparent 25%) -8px 0,linear-gradient(225deg,#fff 25%,transparent 25%) -8px 0;background-size:16px 16px}
+.join-card{color:#0b3a63}
+.join-card h2{color:#0b3a63;font-size:1.1rem;font-weight:800;margin:0 0 6px;text-shadow:0 1px 0 #fff}
+.divider{margin:12px 0 0;font-size:.85rem;letter-spacing:.4em;color:var(--accent);opacity:.85}
+.fl{position:absolute;bottom:-14px;font-size:1.5rem;color:#fff;text-shadow:0 2px 6px rgba(13,95,168,.6)}
+.fl.bl{left:24px}
+.fl.br{right:24px}
+@keyframes tw{50%{opacity:.45;transform:scale(.8) rotate(25deg)}}
+@media (prefers-reduced-motion:reduce){.fl{animation:none}}
+.join-card::before,.join-card::after{content:"❄";position:absolute;top:-16px;font-size:1.7rem;color:#fff;text-shadow:0 2px 6px rgba(13,95,168,.6)}
+.join-card::before{right:20px}
+.join-card::after{left:20px}
+.btn:focus-visible{outline:3px solid #ffb300;outline-offset:2px}
+#msg{min-height:1.5em;margin-top:8px;font-size:.9rem}
+.note{font-size:.8rem;opacity:.75;margin-top:6px}
+.credits{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:26px;direction:ltr}
+.glass{padding:7px 16px;border-radius:999px;font-size:.78rem;font-weight:600;color:var(--ink);background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.7);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 4px 14px rgba(13,95,168,.15)}
+.status{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border-radius:999px;font-weight:800;font-size:.9rem;background:rgba(255,255,255,.8);border:1px solid #fff;color:#0b3a63;box-shadow:0 4px 12px rgba(13,95,168,.2)}
+.dot{width:10px;height:10px;border-radius:50%;background:#2e9e4f;box-shadow:0 0 0 4px rgba(46,158,79,.25)}
+.status.off .dot{background:#d32f2f;box-shadow:0 0 0 4px rgba(211,47,47,.25)}
+[hidden]{display:none!important}
+.howto{text-align:right}
+.howto h2{text-align:center}
+.howto ol{margin:10px 0 0;padding:0 22px 0 0;line-height:2.1;font-weight:600}
+.howto li::marker{color:var(--accent);font-weight:800}
+.howto .ltr{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,monospace;font-weight:700;background:rgba(255,255,255,.7);border:1px solid var(--line);border-radius:8px;padding:1px 8px}
+.howto .tip{margin-top:12px;font-size:.82rem;opacity:.85;text-align:center}
+body.pv #snow{display:none}
+body.pv{background:linear-gradient(180deg,var(--bg2),var(--bg1))}
+body.pv main>.card,body.pv .credits{display:none}
+.pcard{background:radial-gradient(circle at 50% 0,rgba(255,255,255,.98),rgba(214,238,255,.9) 75%);color:#0b3a63;border:2px solid #fff;border-radius:24px;padding:24px 20px;margin-bottom:18px;box-shadow:0 0 0 5px rgba(255,255,255,.4),0 8px 18px rgba(13,95,168,.2);text-align:center}
+.pcard h2{margin:0 0 12px;font-size:1.25rem;font-weight:800}
+.pcard input{display:block;width:100%;margin:8px 0;padding:12px 14px;border:1.5px solid #9fd0f5;border-radius:14px;font:inherit;font-size:.95rem;background:#fff;color:#0b3a63;direction:ltr;text-align:left}
+.pcard input:focus{outline:3px solid #5bb6ff;border-color:#1e88e5}
+.pcard .btn{width:100%;margin-top:10px;padding:11px;font-size:.98rem}
+.lnk{display:block;width:100%;margin-top:10px;background:none;border:0;color:#0d5fa8;font:inherit;font-size:.88rem;font-weight:600;text-decoration:underline;cursor:pointer;padding:6px}
+.hi{line-height:2;margin:6px 0 4px}
+#pmsg{min-height:1.4em;margin-top:10px;font-size:.88rem;font-weight:600}
+.welcome{background:linear-gradient(135deg,#e3f4ff,#fff);border:2px dashed #5bb6ff;border-radius:18px;padding:12px 14px;margin:0 0 12px;font-weight:800;line-height:2}
+.pnote{font-size:.75rem;opacity:.7;margin-top:6px}
+@media (prefers-reduced-motion:reduce){#snow{display:none}}
+</style>
+</head>
+<body>
+<canvas id="snow" aria-hidden="true"></canvas>
+<div class="ground" aria-hidden="true"></div>
+<main>
+  <div class="status" id="status"><i class="dot"></i><span>سرور آنلاین</span></div>
+  <script id="state" type="application/json">{"online":true}</script>
+  <h1>Snow Land</h1>
+  <p class="sub">❄️ سرور ماینکرفت ❄️</p>
+
+  <section class="card">
+    <h2>درباره سرور Snow Land</h2>
+    <p>به سرور اسنو لند خوش آمدید! جایی که در آن گیم مود سروایول می‌توانید با دوستانتان بازی کنید. ❄️</p>
+  </section>
+
+  <section class="card join-card" style="text-align:center">
+    <div class="icicles" aria-hidden="true"></div>
+    <h2>برای ورود به سرور این کد را کپی کنید</h2>
+    <span class="ip" id="ip">85.133.205.89</span>
+    <div class="divider" aria-hidden="true">❄ ✦ ❄</div>
+    <button class="btn alt" id="copy" type="button">📋 کپی آدرس</button>
+    <a class="btn" id="join" href="minecraft://?addExternalServer=Snow%20Land|85.133.205.89:19132">🎮 ورود به سرور</a>
+    <button class="btn alt" id="panelBtn" type="button">🔐 ورود به پنل</button>
+    <a class="btn alt" id="help" href="https://rubika.ir/snow_land_suport" target="_blank" rel="noopener">💬 راهنمایی و پشتیبانی</a>
+    <button class="btn alt" id="admBtn" type="button" hidden>🛡️ ورود به پنل ادمین</button>
+    <div id="msg" role="status"></div>
+    <div class="note">پورت پیش‌فرض: 19132 (نسخه Bedrock)</div>
+    <span class="fl bl" aria-hidden="true">❄</span><span class="fl br" aria-hidden="true">✦</span>
+  </section>
+<section class="pcard" id="adm" hidden>
+    <h2>🛡️ پنل ادمین</h2>
+    <p class="hi">وضعیت سرور را از اینجا تغییر بدهید. این بخش فقط برای مالک صفحه دیده می‌شود.</p>
+    <div id="gate">
+      <input id="g-name" placeholder="نام شما">
+      <input id="g-phone" type="tel" inputmode="tel" placeholder="شماره تلفن">
+      <input id="g-pass" type="password" placeholder="رمز ورود ادمین" hidden>
+      <button class="btn" id="g-go" type="button">تایید</button>
+    </div>
+    <div id="adm-body" hidden><button class="btn" id="adm-toggle" type="button"></button></div>
+    <div id="adm-msg" role="status" style="min-height:1.4em;margin-top:8px;font-size:.85rem;font-weight:600"></div>
+    <button class="btn alt" id="adm-home" type="button">🏠 بازگشت به صفحه اصلی</button>
+  </section>
+  <section class="pcard" id="panel" hidden>
+    <h2 id="ptitle">ورود به پنل</h2>
+    <div id="v-login">
+      <input id="l-name" placeholder="نام داخل سرور (Username)" autocomplete="username" autocapitalize="off">
+      <input id="l-pass" type="password" placeholder="رمز عبور" autocomplete="current-password">
+      <button class="btn" id="do-login" type="button">ورود</button>
+      <button class="lnk" id="go-rec" type="button">رمزم را فراموش کرده‌ام</button>
+      <button class="lnk" id="go-reg" type="button">حساب ندارم، ساخت حساب</button>
+    </div>
+    <div id="v-reg" hidden>
+      <input id="r-name" placeholder="نام داخل سرور (حروف انگلیسی)" autocapitalize="off">
+      <input id="r-pass" type="password" placeholder="رمز عبور (حداقل ۶ کاراکتر)" autocomplete="new-password">
+      <input id="r-pass2" type="password" placeholder="رمز دوم برای بازیابی (متفاوت از رمز اول)" autocomplete="off">
+      <input id="r-phone" type="tel" inputmode="tel" placeholder="شماره تلفن (برای بازیابی رمز)">
+      <button class="btn" id="do-reg" type="button">ساخت حساب</button>
+      <button class="lnk" id="reg-back" type="button">بازگشت به ورود</button>
+    </div>
+    <div id="v-rec" hidden>
+      <input id="c-name" placeholder="نام داخل سرور" autocapitalize="off">
+      <input id="c-phone" type="tel" inputmode="tel" placeholder="شماره تلفنی که ثبت کردید">
+      <input id="c-pass2" type="password" placeholder="رمز دوم (که موقع ساخت حساب گذاشتید)" autocomplete="off">
+      <input id="c-pass" type="password" placeholder="رمز جدید" autocomplete="new-password">
+      <button class="btn" id="do-rec" type="button">تغییر رمز</button>
+      <button class="lnk" id="rec-back" type="button">بازگشت به ورود</button>
+    </div>
+    <div id="v-in" hidden>
+      <div class="welcome" id="welcome" hidden>🎉 حساب شما با موفقیت ساخته شد!<br>به خانواده Snow Land خوش آمدی، <b id="who2"></b> ❄️<br>منتظرت داخل سرور هستیم. 🎮</div>
+      <p class="hi">سلام <b id="who"></b> ❄️<br>به پنل Snow Land خوش آمدی.</p>
+      <button class="btn alt" id="go-nm" type="button">✏️ تغییر نام</button>
+      <button class="btn alt" id="go-ph" type="button">📱 تغییر شماره تلفن</button>
+      <button class="btn alt" id="go-r2" type="button">🔑 تغییر رمز دوم</button>
+      <button class="btn alt" id="do-out" type="button">خروج از حساب</button>
+    </div>
+    <div id="v-nm" hidden>
+      <input id="n-new" placeholder="نام جدید (حروف انگلیسی)" autocapitalize="off">
+      <input id="n-pass" type="password" placeholder="رمز عبور فعلی" autocomplete="current-password">
+      <button class="btn" id="do-nm" type="button">ذخیره نام جدید</button>
+      <button class="lnk" id="nm-back" type="button">بازگشت</button>
+    </div>
+    <div id="v-ph" hidden>
+      <input id="h-new" type="tel" inputmode="tel" placeholder="شماره تلفن جدید">
+      <input id="h-pass" type="password" placeholder="رمز عبور فعلی" autocomplete="current-password">
+      <button class="btn" id="do-ph" type="button">ذخیره شماره جدید</button>
+      <button class="lnk" id="ph-back" type="button">بازگشت</button>
+    </div>
+    <div id="v-r2" hidden>
+      <input id="s-new" type="password" placeholder="رمز دوم جدید" autocomplete="off">
+      <input id="s-pass" type="password" placeholder="رمز عبور فعلی" autocomplete="current-password">
+      <button class="btn" id="do-r2" type="button">ذخیره رمز دوم</button>
+      <button class="lnk" id="r2-back" type="button">بازگشت</button>
+    </div>
+    <div id="pmsg" role="status"></div>
+    <div class="pnote">حساب‌ها فقط روی همین گوشی ذخیره می‌شوند.</div>
+    <button class="btn" id="home-btn" type="button" style="margin-top:16px">🏠 بازگشت به صفحه اصلی</button>
+  </section>
+  <section class="card howto">
+    <h2>📖 آموزش ورود به سرور</h2>
+    <ol>
+      <li>ماینکرفت <b>Bedrock</b> را روی گوشی یا ویندوز باز کنید.</li>
+      <li>روی <b>Play</b> بزنید و به تب <b>Servers</b> بروید.</li>
+      <li>تا پایین لیست بروید و روی <b>Add Server</b> بزنید.</li>
+      <li>در <b>Server Name</b> بنویسید <span class="ltr">Snow Land</span></li>
+      <li>در <b>Server Address</b> بنویسید <span class="ltr">85.133.205.89</span></li>
+      <li>در <b>Port</b> بنویسید <span class="ltr">19132</span></li>
+      <li>روی <b>Save</b> بزنید، بعد سرور Snow Land را از لیست انتخاب کنید و وارد شوید. 🎮</li>
+    </ol>
+    <div class="tip">❄️ راه سریع‌تر: دکمه‌ی «ورود به سرور» بالای صفحه را بزنید تا خود ماینکرفت سرور را اضافه کند.<br>نسخه‌ی Java پشتیبانی نمی‌شود، فقط Bedrock.</div>
+  </section>
+  <div class="credits">
+    <span class="glass">Owner : Mahan_8888</span>
+    <span class="glass">Creator : Itsraelme</span>
+  </div>
+</main>
+
+<script>
+(function(){
+  var ip="85.133.205.89", msg=document.getElementById("msg");
+  document.getElementById("copy").addEventListener("click",function(){
+    function ok(){msg.textContent="کپی شد ✅"}
+    function fallback(){
+      var r=document.createRange();r.selectNodeContents(document.getElementById("ip"));
+      var s=getSelection();s.removeAllRanges();s.addRange(r);
+      try{document.execCommand("copy");ok()}catch(e){msg.textContent="آدرس را نگه دارید و کپی کنید"}
+    }
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(ip).then(ok,fallback)}else{fallback()}
+  });
+  document.getElementById("join").addEventListener("click",function(){
+    msg.textContent="در حال باز کردن ماینکرفت...";
+    try{navigator.clipboard&&navigator.clipboard.writeText(ip)}catch(e){}
+  });
+
+  var c=document.getElementById("snow"),x=c.getContext("2d"),W,H,f=[];
+  function size(){W=c.width=innerWidth;H=c.height=innerHeight}
+  size();addEventListener("resize",size);
+  for(var i=0;i<38;i++)f.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*3.2+1,s:Math.random()*1.1+.5,d:Math.random()*Math.PI*2});
+  (function draw(){
+    if(document.hidden||document.body.classList.contains("pv")){setTimeout(function(){requestAnimationFrame(draw)},300);return}x.clearRect(0,0,W,H);x.fillStyle="rgba(255,255,255,.95)";
+    f.forEach(function(p){
+      p.y+=p.s;p.d+=.02;p.x+=Math.sin(p.d)*.6;
+      if(p.y>H){p.y=-5;p.x=Math.random()*W}
+      x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fill();
+    });
+    requestAnimationFrame(draw);
+  })();
+})();
+</script>
+<script>
+(function(){
+  var K="snowland_users",cur=null,pv=document.getElementById("panel"),pm=document.getElementById("pmsg");
+  var fresh=false;
+  var views=["v-login","v-reg","v-rec","v-in","v-nm","v-ph","v-r2"],titles={"v-login":"ورود به پنل","v-reg":"ساخت حساب","v-rec":"بازیابی رمز","v-in":"پنل شما","v-nm":"تغییر نام","v-ph":"تغییر شماره تلفن","v-r2":"تغییر رمز دوم"};
+  function $(i){return document.getElementById(i)}
+  function load(){try{return JSON.parse(localStorage.getItem(K)||"{}")}catch(e){return{}}}
+  function save(u){try{localStorage.setItem(K,JSON.stringify(u));return true}catch(e){return false}}
+  function sha(s){
+    if(!(window.crypto&&crypto.subtle))return Promise.resolve("p"+s);
+    return crypto.subtle.digest("SHA-256",new TextEncoder().encode(s)).then(function(b){
+      return Array.prototype.map.call(new Uint8Array(b),function(x){return("0"+x.toString(16)).slice(-2)}).join("");
+    });
+  }
+  function hp(n,p){return sha("snowland:"+n.toLowerCase()+":"+p)}
+  function h2(p){return sha("snowland-r2:"+p)}
+  function hph(ph){return sha("snowland-ph:"+ph.replace(/\D/g,""))}
+  function say(t,ok){pm.textContent=t;pm.style.color=ok?"#1b7f3a":"#b3261e"}
+  function show(v){views.forEach(function(x){$(x).hidden=(x!==v)});$("ptitle").textContent=titles[v];say("");if(v==="v-in"){$("welcome").hidden=!fresh;$("who2").textContent=cur||"";fresh=false}}
+  function route(){
+    var on=(location.hash==="#panel");
+    document.body.classList.toggle("pv",on);pv.hidden=!on;
+    if(on){show(cur?"v-in":"v-login")}
+    window.scrollTo(0,0);
+  }
+  addEventListener("hashchange",route);route();
+  $("panelBtn").addEventListener("click",function(){location.hash="panel"});
+  $("home-btn").addEventListener("click",function(){location.hash="home"});
+  $("go-reg").addEventListener("click",function(){show("v-reg")});
+  $("go-rec").addEventListener("click",function(){show("v-rec")});
+  $("reg-back").addEventListener("click",function(){show("v-login")});
+  $("rec-back").addEventListener("click",function(){show("v-login")});
+  $("do-out").addEventListener("click",function(){cur=null;show("v-login")});
+  $("go-nm").addEventListener("click",function(){show("v-nm")});
+  $("go-r2").addEventListener("click",function(){show("v-r2")});
+  $("r2-back").addEventListener("click",function(){show("v-in")});
+  $("go-ph").addEventListener("click",function(){show("v-ph")});
+  $("nm-back").addEventListener("click",function(){show("v-in")});
+  $("ph-back").addEventListener("click",function(){show("v-in")});
+
+  $("do-login").addEventListener("click",function(){
+    var n=$("l-name").value.trim(),p=$("l-pass").value;
+    if(!n||!p){say("نام و رمز را وارد کنید");return}
+    var u=load()[n.toLowerCase()];
+    if(!u){say("این نام ثبت نشده، اول حساب بسازید");return}
+    hp(n,p).then(function(h){
+      if(h===u.h){cur=u.name;$("who").textContent=cur;$("l-pass").value="";show("v-in")}
+      else say("رمز اشتباه است");
+    });
+  });
+
+  $("do-reg").addEventListener("click",function(){
+    var n=$("r-name").value.trim(),p=$("r-pass").value,p2=$("r-pass2").value,ph=$("r-phone").value;
+    if(!/^[A-Za-z0-9_]{3,16}$/.test(n)){say("نام باید ۳ تا ۱۶ حرف انگلیسی، عدد یا _ باشد");return}
+    if(p.length<6){say("رمز حداقل ۶ کاراکتر باشد");return}
+    if(p2.length<6){say("رمز دوم حداقل ۶ کاراکتر باشد");return}
+    if(p2===p){say("رمز دوم باید با رمز اول متفاوت باشد");return}
+    if(ph.replace(/\D/g,"").length<10){say("شماره تلفن را کامل وارد کنید");return}
+    var all=load();
+    if(all[n.toLowerCase()]){say("این نام قبلاً ثبت شده");return}
+    Promise.all([hp(n,p),hph(ph),h2(p2)]).then(function(r){
+      all[n.toLowerCase()]={name:n,h:r[0],ph:r[1],h2:r[2]};
+      if(!save(all)){say("ذخیره حساب ممکن نشد");return}
+      cur=n;fresh=true;$("who").textContent=n;$("r-pass").value="";$("r-pass2").value="";$("r-phone").value="";show("v-in");
+    });
+  });
+
+  $("do-rec").addEventListener("click",function(){
+    var n=$("c-name").value.trim(),ph=$("c-phone").value,p2=$("c-pass2").value,p=$("c-pass").value;
+    if(!n||!ph||p.length<6){say("همه فیلدها را پر کنید (رمز جدید حداقل ۶ کاراکتر)");return}
+    var all=load(),u=all[n.toLowerCase()];
+    if(!u){say("این نام ثبت نشده");return}
+    if(u.h2&&!p2){say("رمز دوم را وارد کنید");return}
+    Promise.all([hph(ph),hp(n,p),p2?h2(p2):Promise.resolve("")]).then(function(r){
+      if(r[0]!==u.ph){say("شماره تلفن با حساب مطابقت ندارد");return}
+      if(u.h2&&r[2]!==u.h2){say("رمز دوم اشتباه است");return}
+      u.h=r[1];all[n.toLowerCase()]=u;save(all);
+      $("c-pass").value="";$("c-pass2").value="";show("v-login");say("رمز تغییر کرد، وارد شوید",true);
+    });
+  });
+
+  $("do-nm").addEventListener("click",function(){
+    var n=$("n-new").value.trim(),p=$("n-pass").value,all=load(),old=cur.toLowerCase(),u=all[old];
+    if(!/^[A-Za-z0-9_]{3,16}$/.test(n)){say("نام باید ۳ تا ۱۶ حرف انگلیسی، عدد یا _ باشد");return}
+    if(!p){say("رمز فعلی را وارد کنید");return}
+    if(n.toLowerCase()!==old&&all[n.toLowerCase()]){say("این نام قبلاً ثبت شده");return}
+    hp(cur,p).then(function(h){
+      if(h!==u.h){say("رمز اشتباه است");return}
+      hp(n,p).then(function(h2n){
+        delete all[old];all[n.toLowerCase()]={name:n,h:h2n,ph:u.ph,h2:u.h2};
+        if(!save(all)){say("ذخیره ممکن نشد");return}
+        cur=n;$("who").textContent=n;$("n-new").value="";$("n-pass").value="";show("v-in");say("نام با موفقیت تغییر کرد ✅",true);
+      });
+    });
+  });
+
+  $("do-r2").addEventListener("click",function(){
+    var s=$("s-new").value,p=$("s-pass").value,all=load(),u=all[cur.toLowerCase()];
+    if(s.length<6){say("رمز دوم حداقل ۶ کاراکتر باشد");return}
+    if(s===p){say("رمز دوم باید با رمز اول متفاوت باشد");return}
+    Promise.all([hp(cur,p),h2(s)]).then(function(r){
+      if(r[0]!==u.h){say("رمز اشتباه است");return}
+      u.h2=r[1];all[cur.toLowerCase()]=u;
+      if(!save(all)){say("ذخیره ممکن نشد");return}
+      $("s-new").value="";$("s-pass").value="";show("v-in");say("رمز دوم با موفقیت تغییر کرد ✅",true);
+    });
+  });
+
+  $("do-ph").addEventListener("click",function(){
+    var ph=$("h-new").value,p=$("h-pass").value,all=load(),u=all[cur.toLowerCase()];
+    if(ph.replace(/\D/g,"").length<10){say("شماره تلفن را کامل وارد کنید");return}
+    if(!p){say("رمز فعلی را وارد کنید");return}
+    Promise.all([hp(cur,p),hph(ph)]).then(function(r){
+      if(r[0]!==u.h){say("رمز اشتباه است");return}
+      u.ph=r[1];all[cur.toLowerCase()]=u;
+      if(!save(all)){say("ذخیره ممکن نشد");return}
+      $("h-new").value="";$("h-pass").value="";show("v-in");say("شماره تلفن با موفقیت تغییر کرد ✅",true);
+    });
+  });
+})();
+</script>
+<script>
+(function(){
+  var st={online:true},pill=document.getElementById("status");
+  try{st=JSON.parse(document.getElementById("state").textContent)}catch(e){}
+  pill.className="status"+(st.online?"":" off");
+  pill.lastChild.textContent=st.online?"سرور آنلاین":"سرور آفلاین";
+  if(!window.claude||!claude.use)return;
+  Promise.all([claude.use("user"),claude.use("artifact")]).then(function(r){
+    var u=r[0],a=r[1];
+    if(!u||!a||!u.isOwner||!u.isOwner())return;
+    var ab=document.getElementById("admBtn");ab.hidden=false;
+    function rt(){var on=(location.hash==="#admin");document.getElementById("adm").hidden=!on;if(on)document.body.classList.add("pv")}
+    ab.addEventListener("click",function(){location.hash="admin"});
+    document.getElementById("adm-home").addEventListener("click",function(){location.hash="home"});
+    addEventListener("hashchange",rt);rt();
+    var gm=document.getElementById("adm-msg"),gp=document.getElementById("g-pass"),gg=document.getElementById("g-go"),H="79aaa81d917b675d04ca93fa6d1aee372d5f4bc4d7a6805ebb18fdb5e820867d";
+    gg.addEventListener("click",function(){
+      if(gp.hidden){
+        var n=document.getElementById("g-name").value.trim(),p=document.getElementById("g-phone").value.replace(/\D/g,"");
+        if(!n||p.length<10){gm.style.color="#b3261e";gm.textContent="نام و شماره تلفن را کامل وارد کنید";return}
+        gp.hidden=false;gg.textContent="ورود";gm.style.color="#1b7f3a";gm.textContent="تایید شد، رمز ورود را وارد کنید";return;
+      }
+      if(!(window.crypto&&crypto.subtle)){gm.textContent="مرورگر شما پشتیبانی نمی‌کند";return}
+      crypto.subtle.digest("SHA-256",new TextEncoder().encode("snowland-admin:"+gp.value)).then(function(b){
+        var h=Array.prototype.map.call(new Uint8Array(b),function(x){return("0"+x.toString(16)).slice(-2)}).join("");
+        if(h===H){document.getElementById("gate").hidden=true;document.getElementById("adm-body").hidden=false;gm.textContent=""}
+        else{gm.style.color="#b3261e";gm.textContent="رمز اشتباه است"}
+      });
+    });
+    var btn=document.getElementById("adm-toggle"),m=document.getElementById("adm-msg");
+    btn.textContent=st.online?"⛔ آفلاین کردن سرور":"✅ آنلاین کردن سرور";
+    btn.addEventListener("click",function(){
+      btn.disabled=true;m.textContent="در حال ذخیره...";
+      fetch(location.href.split("#")[0],{cache:"no-store"}).then(function(x){if(!x.ok)throw 0;return x.text()}).then(function(src){
+        var i=src.indexOf('<script id="state"');if(i<0||src.indexOf("<!DOCTYPE")<0&&src.indexOf("<!doctype")<0)throw 0;
+        var s=src.indexOf(">",i)+1,e=src.indexOf("</scr"+"ipt>",s);if(e<0)throw 0;
+        return a.publish(src.slice(0,s)+JSON.stringify({online:!st.online})+src.slice(e));
+      }).catch(function(){m.textContent="ذخیره نشد. از Claude بخواهید وضعیت را عوض کند.";btn.disabled=false});
+    });
+  });
+})();
+</script>
+</body>
+</html>
